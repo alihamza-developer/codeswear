@@ -1,7 +1,4 @@
 import Head from "next/head";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
 
 export default function Home() {
   return (
@@ -11,12 +8,6 @@ export default function Home() {
         <meta name="keywords" content="codingtshirt, coding shirts, codeswear" />
         <link rel="icon" href="/images/favicon.ico" />
       </Head>
-
-
-
-
-      <Navbar />
-      <Footer />
     </>
   );
 }
