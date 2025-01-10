@@ -10,7 +10,7 @@ const Navbar = (props) => {
   return (
     <>
       <div className="sticky top-0 flex flex-col z-10 shadow-sm">
-        <nav className="text-gray-600 bg-white body-font border-b sticky top-0">
+        <nav className="text-gray-600 bg-white body-font border-b top-0">
           <div className="mx-5 flex justify-between p-3 items-center">
 
             <a className="flex title-font font-medium items-center text-gray-900">
