@@ -5,10 +5,11 @@ import { GoSidebarExpand } from "react-icons/go";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 
 
-const Navbar = () => {
+const Navbar = (props) => {
+
   return (
     <>
-      <div className="sticky top-0 flex flex-col z-50 shadow-sm">
+      <div className="sticky top-0 flex flex-col z-10 shadow-sm">
         <nav className="text-gray-600 bg-white body-font border-b sticky top-0">
           <div className="mx-5 flex justify-between p-3 items-center">
 
@@ -49,7 +50,7 @@ const Navbar = () => {
               <Link href="/mugs"><li>Mugs</li></Link>
               <Link href="/stickers"><li>Stickers</li></Link>
             </ul>
-            <button><HiOutlineShoppingCart size={20} /></button>
+            <button onClick={() => props.toggleCart(true)}><HiOutlineShoppingCart size={20} /></button>
           </div>
         </nav>
       </div>
