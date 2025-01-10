@@ -42,7 +42,7 @@ const Navbar = (props) => {
 
         </nav>
         {/* Categories Navbar */}
-        <nav className='text-gray-800 bg-white border-b p-2 px-11'>
+        <nav className='text-gray-800 bg-white border-b py-3 px-11'>
           <div className="flex justify-between">
             <ul className='flex gap-4 cursor-pointer text-slate-700 text-sm'>
               <Link href="/tshirts"><li>Tshirts</li></Link>
