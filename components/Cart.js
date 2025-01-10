@@ -6,9 +6,9 @@ const Cart = (props) => {
     return (
         <div className={`relative z-50`} role="dialog">
             {/* Over Lay */}
-            <div onClick={() => props.toggleCart(false)} className={`fixed inset-0 bg-gray-500/75 transition-opacity duration-300 ${props.status == false ? "hidden" : ""}`}></div>
+            <div onClick={() => props.toggleCart(false)} className={`fixed inset-0 bg-gray-500/75 transition-opacity duration-300 ${props.isOpen == false ? "hidden" : ""}`}></div>
 
-            <div className={`fixed inset-y-0 ${props.status == false ? "-right-96" : "right-0"} transition-all duration-300 flex h-full flex-col overflow-y-auto bg-white shadow-xl w-full max-w-96`}>
+            <div className={`fixed inset-y-0 ${props.isOpen == false ? "-right-96" : "right-0"} transition-all duration-300 flex h-full flex-col overflow-y-auto bg-white shadow-xl w-full max-w-96`}>
 
                 {/* Header */}
                 <div className="flex items-start px-4 py-6 sm:px-6 shadow-sm justify-between sticky top-0">
