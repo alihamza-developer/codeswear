@@ -4,8 +4,16 @@ import Cart from "@/components/Cart";
 import "@/styles/globals.css";
 import { useEffect, useState } from "react";
 
+// Fetch products from API
+export async function getStaticProps() {
+  let response = await fetch('http://localhost:3000/api/products');
+  response = await res.json()
+  // Pass data to the page via props
+  return { props: { response } };
+}
 
-export default function App({ Component, pageProps }) {
+
+export default function App({ Component, pageProps, response }) {
   const [isOpen, toggleCart] = useState(false),
     [cart, setCart] = useState({});
 
@@ -15,9 +23,7 @@ export default function App({ Component, pageProps }) {
     if (cart) setCart(JSON.parse(cart));
   }, []);
 
-
-
-
+  // Add product to cart
   const addToCart = (product) => {
     let { quantity, code } = product,
       newCart = cart;
