@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { LuHeart } from "react-icons/lu";
 import { HiOutlineShoppingCart } from "react-icons/hi";
@@ -6,10 +6,24 @@ import { MdDirectionsBike } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 
 
-
 const Product = () => {
     let router = useRouter(),
-        { slug } = router.query;
+        { slug } = router.query,
+
+        [service, setService] = useState(null),
+        [pin, setPin] = useState(null);
+
+    // Check Servicebility 
+    const checkService = async () => {
+        let pinCodes = await fetch("http://localhost:3000/api/pincodes"),
+            response = await pinCodes.json();
+        setService(response.includes(parseInt(pin)) ? true : false);
+    }
+
+    // Handle Pin
+    const handlePin = (e) => {
+        setPin(e.target.value);
+    }
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
@@ -18,8 +32,8 @@ const Product = () => {
 
                     <div className='relative lg:w-1/2 w-full lg:h-auto'>
                         <img alt="ecommerce" className="w-full object-cover rounded" src="/uploads/shirt1.jpg" />
-                        <button className="rounded-full w-10 h-10 bg-pink-400 hover:bg-pink-600 p-0 border-0 inline-flex items-center justify-center text-white absolute top-4 right-5"><LuHeart width={14} height={14} /></button>
-                        <button className="rounded-full w-10 h-10 bg-pink-400 hover:bg-pink-600 p-0 border-0 inline-flex items-center justify-center text-white absolute top-20 right-5"><HiOutlineShoppingCart width={14} height={14} /></button>
+                        <button className="rounded-full w-10 h-10 bg-pink-600 hover:bg-pink-800 p-0 border-0 inline-flex items-center justify-center text-white absolute top-4 right-5"><LuHeart width={14} height={14} /></button>
+                        <button className="rounded-full w-10 h-10 bg-pink-600 hover:bg-pink-800 p-0 border-0 inline-flex items-center justify-center text-white absolute top-20 right-5"><HiOutlineShoppingCart width={14} height={14} /></button>
                     </div>
 
                     <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 lg:mt-0">
@@ -98,14 +112,16 @@ const Product = () => {
 
                         <div className="flex items-center justify-between">
                             <span className="title-font font-medium text-2xl text-gray-900">$58.00</span>
-
                             <button className="flex ml-auto text-sm text-white bg-pink-500 border-0 py-2 px-4 focus:outline-none hover:bg-pink-600 rounded items-center gap-2"> <FaCheck /> Buy Now</button>
                         </div>
 
                         <div className="flex mt-4 gap-3 rounded border shadow-sm w-fit">
-                            <input type="text" className='outline-none w-full bg-white py-2 px-4  text-sm text-slate-700 border-none border-0' placeholder='Enter your pin code' />
-                            <button className="flex text-white rounded-l-none text-sm bg-pink-500 border-0 py-2 px-4 focus:outline-none hover:bg-pink-600 rounded items-center gap-2"><MdDirectionsBike />Check</button>
+                            <input type="text" onChange={handlePin} className='outline-none w-full bg-white py-2 px-4  text-sm text-slate-700 border-none border-0' placeholder='Enter your pin code' />
+                            <button onClick={checkService} className="flex text-white rounded-l-none text-sm bg-pink-500 border-0 py-2 px-4 focus:outline-none hover:bg-pink-600 rounded items-center gap-2"><MdDirectionsBike />Check</button>
+                        </div>
 
+                        <div className="mt-2 text-sm w-fit">
+                            {service === null ? null : service === true ? <p className="text-green-500">Service Available</p> : <p className="text-red-500">Service Not Available</p>}
                         </div>
 
                     </div>
