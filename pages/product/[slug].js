@@ -6,7 +6,7 @@ import { MdDirectionsBike } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 
 
-const Product = () => {
+const Product = (props) => {
     let router = useRouter(),
         { slug } = router.query,
 
@@ -25,6 +25,19 @@ const Product = () => {
         setPin(e.target.value);
     }
 
+    // Handle Add To Cart
+    const handleAddToCart = () => {
+        props.addToCart({
+            title: "Black Tshirt (XL,SM)",
+            code: 1234,
+            price: 200,
+            quantity: 1,
+            image: "shirt2.jpg",
+            description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione repudiandae distinctio cum consequuntur aspernatur vel, tempora perspiciatis totam delectus error aperiam culpa, quidem, quas quos. Quisquam, quod. Quisquam, quod.",
+        });
+        props.toggleCart(true);
+    }
+
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-5 py-24 mx-auto">
@@ -33,7 +46,7 @@ const Product = () => {
                     <div className='relative lg:w-1/2 w-full lg:h-auto'>
                         <img alt="ecommerce" className="w-full object-cover rounded" src="/uploads/shirt1.jpg" />
                         <button className="rounded-full w-10 h-10 bg-pink-600 hover:bg-pink-800 p-0 border-0 inline-flex items-center justify-center text-white absolute top-4 right-5"><LuHeart width={14} height={14} /></button>
-                        <button className="rounded-full w-10 h-10 bg-pink-600 hover:bg-pink-800 p-0 border-0 inline-flex items-center justify-center text-white absolute top-20 right-5"><HiOutlineShoppingCart width={14} height={14} /></button>
+                        <button className="rounded-full w-10 h-10 bg-pink-600 hover:bg-pink-800 p-0 border-0 inline-flex items-center justify-center text-white absolute top-20 right-5" onClick={handleAddToCart}><HiOutlineShoppingCart width={14} height={14} /></button>
                     </div>
 
                     <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 lg:mt-0">

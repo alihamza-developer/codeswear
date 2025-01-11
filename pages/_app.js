@@ -5,49 +5,78 @@ import "@/styles/globals.css";
 import { useEffect, useState } from "react";
 
 // Fetch products from API
-export async function getStaticProps() {
-  let response = await fetch('http://localhost:3000/api/products');
-  response = await res.json()
-  // Pass data to the page via props
-  return { props: { response } };
-}
 
-
-export default function App({ Component, pageProps, response }) {
+export default function App({ Component, pageProps, products }) {
   const [isOpen, toggleCart] = useState(false),
-    [cart, setCart] = useState({});
+    [cart, setCart] = useState({}),
+    [subTotal, setSubTotal] = useState(0);
 
-  // Load cart from local storage
+  // Save Cart
+  const saveCart = (newCart) => {
+    localStorage.setItem("cart", JSON.stringify(newCart));
+    // Calculate Sub Total
+    let total = 0;
+    for (const code in newCart) {
+      let { price, quantity } = newCart[code];
+      total += parseInt(price) * parseInt(quantity);
+    }
+    setSubTotal(total);
+  }
+
   useEffect(() => {
-    let cart = localStorage.getItem('cart');
-    if (cart) setCart(JSON.parse(cart));
+    let cart = localStorage.getItem("cart");
+
+
+    if (cart) {
+      try {
+        cart = JSON.parse(cart);
+        setCart(cart);
+        saveCart(cart)
+      } catch (error) {
+        localStorage.clear();
+      }
+
+    }
+
   }, []);
 
-  // Add product to cart
-  const addToCart = (product) => {
-    let { quantity, code } = product,
-      newCart = cart;
 
+  // Add to Cart
+  // Accepted Props: title,price,description,image,quantity,code,varients
+  const addToCart = (product) => {
+    let { quantity = 1, code } = product,
+      newCart = cart;
     if (newCart[code])
       newCart[code].quantity += quantity;
     else
       newCart[code] = product;
 
-    setCart(newCart, () => saveCart());
+    setCart(newCart);
+    saveCart(newCart);
   }
 
-  // Save cart to local storage
-  const saveCart = () => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+
+  // Clear Cart
+  const clearCart = () => {
+    setCart({});
+    localStorage.setItem("cart", JSON.stringify({}));
   }
+
+  // Remove From Cart
+  const removeFromCart = (code) => {
+    let newCart = JSON.parse(JSON.stringify(cart));
+
+    delete newCart[code];
+    setCart(newCart);
+  }
+
 
   return (
     <>
       <Navbar toggleCart={toggleCart} />
-      <Cart cart={cart} toggleCart={toggleCart} isOpen={isOpen} />
-      <Component {...pageProps} />
+      <Cart setCart={setCart} removeFromCart={removeFromCart} saveCart={saveCart} subTotal={subTotal} cart={cart} clearCart={clearCart} toggleCart={toggleCart} isOpen={isOpen} />
+      <Component toggleCart={toggleCart} addToCart={addToCart} {...pageProps} />
       <Footer />
     </>
   );
 }
-
